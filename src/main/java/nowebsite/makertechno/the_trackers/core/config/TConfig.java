@@ -72,6 +72,7 @@ public class TConfig {
                             "terra_entity:brain_of_cthulhu|normal|brain_of_cthulhu",
                             "terra_entity:eater_of_worlds|normal|eater_of_worlds",
                             "terra_entity:queen_bee|normal|queen_bee",
+                            "terra_entity:deerclops|normal|deerclops",
                             "terra_entity:skeletron|normal|skeletron",
                             "terra_entity:hill_of_flesh|normal|wall_of_flesh",
                             "terra_entity:wall_of_flesh|normal|wall_of_flesh",
