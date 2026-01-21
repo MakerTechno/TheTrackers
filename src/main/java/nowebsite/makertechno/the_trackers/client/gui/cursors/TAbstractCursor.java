@@ -10,7 +10,7 @@ import nowebsite.makertechno.the_trackers.core.config.TConfig;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public abstract class TAbstractCursor implements TRenderComponent{
+public abstract class TAbstractCursor implements TRenderCursor {
 
     protected float scaleCached;
     protected boolean smoothMove = true;

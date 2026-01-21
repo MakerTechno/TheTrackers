@@ -6,13 +6,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-public class RainbowIconComponent extends IconComponent {
+public class RainbowComponent extends BaseComponent {
     private final int intervalColor;
     private int intervalCount;
     private float hue;
     private float r = 1.0F, g = 1.0F, b = 1.0F;
-    public RainbowIconComponent(Icon icon, int intervalColor) {
-        super(icon);
+    public RainbowComponent(IRenderElement element, int intervalColor) {
+        super(element);
         this.intervalColor = intervalColor;
     }
     public static boolean isValidPatterns(int intervalColor) {

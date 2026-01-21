@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import nowebsite.makertechno.the_trackers.client.gui.components.IconComponent;
+import nowebsite.makertechno.the_trackers.client.gui.components.BaseComponent;
 import nowebsite.makertechno.the_trackers.core.track.algorithm.CameraProjector;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4fStack;
@@ -42,11 +42,11 @@ public class TDirectProjCursor extends TAbstractCursor {
 
     protected static final GameRenderer RENDERER = Minecraft.getInstance().gameRenderer;
 
-    protected final IconComponent component;
+    protected final BaseComponent component;
 
     private final Transformer transformer = new Transformer(0, 0);
 
-    public TDirectProjCursor(IconComponent component) {
+    public TDirectProjCursor(BaseComponent component) {
         super();
         this.component = component;
     }
@@ -98,14 +98,15 @@ public class TDirectProjCursor extends TAbstractCursor {
 
     protected void translateAndRenderComponents(
             GuiGraphics graphics,
-            IconComponent component,
+            BaseComponent component,
             Matrix4fStack stack,
             float partialTick,
             float scale
     ) {
+        scale = scale * component.rescale();
         stack.translate(
-                -(float) component.getIcon().width() * scale / 2,
-                -(float) component.getIcon().height() * scale / 2,
+                -(float) component.getElement().width() * scale / 2,
+                -(float) component.getElement().height() * scale / 2,
                 0
         );
         stack.translate(transformer.x , transformer.y, 0);

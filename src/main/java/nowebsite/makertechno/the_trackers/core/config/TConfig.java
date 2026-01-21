@@ -7,7 +7,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import nowebsite.makertechno.the_trackers.TheTrackers;
-import nowebsite.makertechno.the_trackers.client.gui.cursors.TRenderComponent;
+import nowebsite.makertechno.the_trackers.client.gui.cursors.TRenderCursor;
 import nowebsite.makertechno.the_trackers.core.event.TModClient;
 import nowebsite.makertechno.the_trackers.core.track.EntityTracker;
 import nowebsite.makertechno.the_trackers.core.track.algorithm.ProjectAlgorithmLib;
@@ -133,8 +133,8 @@ public class TConfig {
     public static boolean trackFullAvailable;
     public static boolean headFlatAvailable;
     public static ProjectAlgorithmLib.Type projectAlgorithm;
-    public static Set<Pair<EntityType<?>, Supplier<? extends TRenderComponent>>> CRCursorWithEntities;
-    public static Set<Pair<EntityType<?>, Supplier<? extends TRenderComponent>>> DTCursorWithEntities;
+    public static Set<Pair<EntityType<?>, Supplier<? extends TRenderCursor>>> CRCursorWithEntities;
+    public static Set<Pair<EntityType<?>, Supplier<? extends TRenderCursor>>> DTCursorWithEntities;
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event) {

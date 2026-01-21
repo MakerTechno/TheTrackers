@@ -8,7 +8,7 @@ import nowebsite.makertechno.the_trackers.api.component.ComponentBuilder;
 import nowebsite.makertechno.the_trackers.api.component.SimpleComponent;
 import nowebsite.makertechno.the_trackers.api.component.StaticComponent;
 import nowebsite.makertechno.the_trackers.client.gui.TGui;
-import nowebsite.makertechno.the_trackers.client.gui.cursors.TRenderComponent;
+import nowebsite.makertechno.the_trackers.client.gui.cursors.TRenderCursor;
 import nowebsite.makertechno.the_trackers.client.gui.provider.BuilderResultComposer;
 import nowebsite.makertechno.the_trackers.core.track.states.ControllableTrackerState;
 import nowebsite.makertechno.the_trackers.core.track.states.ControllableTrackerStateEx;
@@ -32,6 +32,16 @@ public class WorldSingletonTracker {
     public final Map<String, List<ControllableTrackerState>> staticPointers = new HashMap<>();
     public final Map<UUID, ControllableTrackerState> questSortedEntityPointers = new HashMap<>();
 
+    private boolean isClosed;
+
+    public void close() {
+        this.clean();
+        this.isClosed = true;
+    }
+
+    public boolean isClosed() {
+        return this.isClosed;
+    }
 
     /**
      * 通过预构内容添加一个UUID指针，指向世界中的实体。
@@ -73,7 +83,7 @@ public class WorldSingletonTracker {
     public SimpleComponent addDynamicMultiComponent(String modID, String identifyName, ComponentBuilder.BuilderResult[] results, UUID target, boolean isVisible) throws IllegalArgumentException {
         synchronized (questSortedEntityPointers) {
             if (questSortedEntityPointers.containsKey(target)) throw new IllegalArgumentException("UUID named " + target + " still on tracking!");
-            TRenderComponent[] components = new TRenderComponent[results.length];
+            TRenderCursor[] components = new TRenderCursor[results.length];
             for (int i = 0; i < results.length; i++) {
                 components[i] = BuilderResultComposer.compose(results[i]);
             }
@@ -95,7 +105,7 @@ public class WorldSingletonTracker {
             case null -> throw new IllegalArgumentException("UUID named " + target + " not found on tracking list!");
             case TickLimitedTrackerState ignored -> throw new UnsupportedOperationException("Tick limited component couldn't be replaced");
             case ControllableTrackerStateEx ex -> {
-                TRenderComponent[] components = new TRenderComponent[results.length];
+                TRenderCursor[] components = new TRenderCursor[results.length];
                 for (int i = 0; i < results.length; i++) {
                     components[i] = BuilderResultComposer.compose(results[i]);
                 }
@@ -109,7 +119,7 @@ public class WorldSingletonTracker {
             default -> {}
         }
         synchronized (questSortedEntityPointers) {
-            TRenderComponent[] components = new TRenderComponent[results.length + 1];
+            TRenderCursor[] components = new TRenderCursor[results.length + 1];
             for (int i = 0; i < results.length; i++) {
                 components[i] = BuilderResultComposer.compose(results[i]);
             }

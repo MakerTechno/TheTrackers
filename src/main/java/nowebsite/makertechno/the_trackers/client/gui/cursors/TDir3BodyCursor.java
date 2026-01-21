@@ -3,7 +3,7 @@ package nowebsite.makertechno.the_trackers.client.gui.cursors;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Mth;
-import nowebsite.makertechno.the_trackers.client.gui.components.IconComponent;
+import nowebsite.makertechno.the_trackers.client.gui.components.BaseComponent;
 import org.joml.Matrix4fStack;
 
 /**
@@ -29,14 +29,14 @@ public class TDir3BodyCursor extends TDirectProjCursor {
         }
     }
 
-    protected final IconComponent component2, component3;
+    protected final BaseComponent component2, component3;
 
     protected boolean shouldFaceCenter = false;
 
     private final B3Transformer b3Transformer = new B3Transformer(0,0,0);
 
 
-    public TDir3BodyCursor(IconComponent component1, IconComponent component2, IconComponent component3) {
+    public TDir3BodyCursor(BaseComponent component1, BaseComponent component2, BaseComponent component3) {
         super(component1);
         this.component2 = component2;
         this.component3 = component3;
@@ -70,12 +70,11 @@ public class TDir3BodyCursor extends TDirectProjCursor {
     @Override
     protected void translateAndRenderComponents(
             GuiGraphics graphics,
-            IconComponent component,
+            BaseComponent component,
             Matrix4fStack stack,
             float partialTick,
             float scale
     ) {
-
         for (int i = 0; i < 3; i++) {
             stack.pushMatrix();
 
@@ -88,8 +87,14 @@ public class TDir3BodyCursor extends TDirectProjCursor {
     }
 
 
-    private void renderComponent(GuiGraphics graphics, IconComponent component, Matrix4fStack stack, float partialTick, float scale, int index) {
-        float radius = (float) component.getIcon().height() * 1.6F * scale;
+    private void renderComponent(GuiGraphics graphics, BaseComponent component, Matrix4fStack stack, float partialTick, float scale, int index) {
+        scale = switch (index) {
+            case 0 -> scale * component.rescale();
+            case 1 -> scale * component2.rescale();
+            case 2 -> scale * component3.rescale();
+            default -> 0;
+        };
+        float radius = (float) component.getElement().height() * 1.6F * scale;
         float angle = b3Transformer.rot + index * Mth.TWO_PI / 3f;
         float px = b3Transformer.x + (float) Math.cos(angle) * radius;
         float py = b3Transformer.y + (float) Math.sin(angle) * radius;
@@ -98,14 +103,14 @@ public class TDir3BodyCursor extends TDirectProjCursor {
         stack.translate(px, py, 0f);
         stack.rotateZ(theta);
         stack.translate(-(float) switch (index) {
-            case 0 -> component.getIcon().width();
-            case 1 -> component2.getIcon().width();
-            case 2 -> component3.getIcon().width();
+            case 0 -> component.getElement().width();
+            case 1 -> component2.getElement().width();
+            case 2 -> component3.getElement().width();
             default -> 0;
         } / 2f * scale, -(float) switch (index) {
-            case 0 -> component.getIcon().height();
-            case 1 -> component2.getIcon().height();
-            case 2 -> component3.getIcon().height();
+            case 0 -> component.getElement().height();
+            case 1 -> component2.getElement().height();
+            case 2 -> component3.getElement().height();
             default -> 0;
         } / 2f * scale, 0f);
         stack.scale(scale);

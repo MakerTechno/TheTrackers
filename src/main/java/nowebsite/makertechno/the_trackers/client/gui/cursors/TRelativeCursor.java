@@ -5,7 +5,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import nowebsite.makertechno.the_trackers.client.gui.components.IconComponent;
+import nowebsite.makertechno.the_trackers.client.gui.components.BaseComponent;
+import nowebsite.makertechno.the_trackers.client.gui.components.IRenderElement;
 import nowebsite.makertechno.the_trackers.client.gui.components.Icon;
 import nowebsite.makertechno.the_trackers.core.config.TConfig;
 import nowebsite.makertechno.the_trackers.core.track.algorithm.RelativeProjector;
@@ -35,11 +36,11 @@ public class TRelativeCursor extends TAbstractCursor {
     }
 
 
-    private final IconComponent pointerIconComponent, entityIconComponent;
+    private final BaseComponent pointerIconComponent, entityIconComponent;
     private final Transformer transformer = new Transformer(0,  0);
     private float pickDirect = 0;
 
-    public TRelativeCursor(IconComponent pointerIconComponent, IconComponent entityIconComponent) {
+    public TRelativeCursor(BaseComponent pointerIconComponent, BaseComponent entityIconComponent) {
         super();
         this.pointerIconComponent = pointerIconComponent;
         this.entityIconComponent = entityIconComponent;
@@ -70,8 +71,8 @@ public class TRelativeCursor extends TAbstractCursor {
     @Override
     protected void updateTransformer(float[] projScrPoint, float partialTick, float scale) {
         float radius = (float) (-projScrPoint[0] - Math.PI/2);
-        Icon pointer = pointerIconComponent.getIcon();
-        Icon icon = entityIconComponent.getIcon();
+        IRenderElement pointer = pointerIconComponent.getElement();
+        IRenderElement icon = entityIconComponent.getElement();
         // pickDirect is ease-in-out from 15 to 2(pointer.getHeight() + icon.getHeight()) when direct is in [0, 0.8),
         // and infinity closes to 2(pointer.getHeight() + icon.getHeight()) when direct bigger than 1
         this.pickDirect = 20 + (float) (Math.atan(projScrPoint[1] / 0.8) * 240 / Math.PI);
@@ -83,8 +84,8 @@ public class TRelativeCursor extends TAbstractCursor {
 
     @Override
     protected float getAlpha(float[] projScrPoint) {
-        Icon pointer = pointerIconComponent.getIcon();
-        Icon icon = entityIconComponent.getIcon();
+        IRenderElement pointer = pointerIconComponent.getElement();
+        IRenderElement icon = entityIconComponent.getElement();
         return Math.min(1, Math.max(0, (pickDirect - 25) / (pointer.height() + icon.height())));
     }
 
@@ -100,18 +101,21 @@ public class TRelativeCursor extends TAbstractCursor {
     protected void translateAndRenderComponents(
             GuiGraphics graphics,
             float[] projScrPoint,
-            IconComponent pointerComponent,
-            IconComponent entityComponent,
+            BaseComponent pointerComponent,
+            BaseComponent entityComponent,
             Matrix4fStack stack,
             float partialTick,
             float scale
     ) {
-        float radius = (float) (-projScrPoint[0] - Math.PI/2);
-        Icon pointer = pointerComponent.getIcon();
-        Icon icon = entityComponent.getIcon();
+        float pointerScale = scale * pointerComponent.rescale();
+        float entityScale = scale * entityComponent.rescale();
 
-        float pw = -(float) pointer.width() / 2 * scale, ph = -(float) pointer.height() / 2 * scale;
-        float ew = (float) icon.width() / 2 * scale, eh = (float) icon.height() / 2 * scale;
+        float radius = (float) (-projScrPoint[0] - Math.PI/2);
+        IRenderElement pointer = pointerComponent.getElement();
+        IRenderElement icon = entityComponent.getElement();
+
+        float pw = -(float) pointer.width() / 2 * pointerScale, ph = -(float) pointer.height() / 2 * pointerScale;
+        float ew = (float) icon.width() / 2 * entityScale, eh = (float) icon.height() / 2 * entityScale;
 
         stack.translate((float) graphics.guiWidth() / 2, (float) graphics.guiHeight() / 2, 0);
 
@@ -119,8 +123,8 @@ public class TRelativeCursor extends TAbstractCursor {
         stack.pushMatrix(); // 2
         {
             stack.translate(pw, ph, 0);
-            stack.translate(0, -this.pickDirect* scale, 0);
-            stack.scale(scale, scale, 1);
+            stack.translate(0, -this.pickDirect* pointerScale, 0);
+            stack.scale(pointerScale, pointerScale, 1);
             RenderSystem.applyModelViewMatrix();
 
             /* go on */
@@ -140,7 +144,7 @@ public class TRelativeCursor extends TAbstractCursor {
                 stack.rotateZ(-radius);  // A funny delayed rot for icon
                 stack.translate(-ew, -eh, 0);
 
-                stack.scale(scale, scale, 1);
+                stack.scale(entityScale, entityScale, 1);
                 RenderSystem.applyModelViewMatrix();
 
                 /* go on */

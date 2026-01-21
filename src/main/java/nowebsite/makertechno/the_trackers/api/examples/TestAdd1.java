@@ -19,7 +19,7 @@ import nowebsite.makertechno.the_trackers.core.track.WorldSingletonTracker;
 public class TestAdd1 {
     private static final ComponentBuilder.BuilderResult posTo0 = new ComponentBuilder()
             .setComponentType(ComponentBuilder.ComponentType.DIRECT)
-            .setIcon1(Items.DIAMOND)
+            .setIcon1(Items.DIAMOND.getDefaultInstance())
             .setIcon1Pattern("rainbow:2")
             .defineRescale(scale -> (float) (1F + Math.min(scale / 2.2, 1f) * Math.min(scale / 2.2, 1f)))
             .setSmoothMove(true)

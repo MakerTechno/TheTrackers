@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public interface TRenderComponent {
+public interface TRenderCursor {
     void setSmoothMove(boolean smoothMove);
     void setAffectedByPlayerScale(boolean affectedByPlayerScale);
     void setRescale(Function<Float, Float> rescale);
@@ -17,7 +17,7 @@ public interface TRenderComponent {
     void flush();
     void render(GuiGraphics graphics, Player player, Vec3 target, float partialTick);
     @Contract(pure = true)
-    static @Nullable TRenderComponent ofNull() {
+    static @Nullable TRenderCursor ofNull() {
         return null;
     }
 }

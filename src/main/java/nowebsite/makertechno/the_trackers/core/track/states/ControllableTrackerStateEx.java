@@ -4,7 +4,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import nowebsite.makertechno.the_trackers.client.gui.cursors.TRenderComponent;
+import nowebsite.makertechno.the_trackers.client.gui.cursors.TRenderCursor;
 
 import java.util.Arrays;
 
@@ -12,7 +12,7 @@ public class ControllableTrackerStateEx extends ControllableTrackerState {
     private TrackerStepState[] states;
 
     @SuppressWarnings("all")
-    public ControllableTrackerStateEx(String identifyName, TRenderComponent[] components, boolean isVisible, boolean isAutoDelete) {
+    public ControllableTrackerStateEx(String identifyName, TRenderCursor[] components, boolean isVisible, boolean isAutoDelete) {
         super(identifyName, null, isVisible, isAutoDelete);
         this.states = new TrackerStepState[components.length];
         Arrays.setAll(this.states, i -> new TrackerStepState(components[i]));

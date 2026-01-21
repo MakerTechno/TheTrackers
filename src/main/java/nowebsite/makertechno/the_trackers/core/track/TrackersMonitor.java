@@ -28,7 +28,7 @@ public class TrackersMonitor {
     }
     public static void quit() {
         TGui.setExtendTracker(null);
-        if (tracker != null) tracker.clean();
+        if (tracker != null) tracker.close();
         tracker = null;
     }
 

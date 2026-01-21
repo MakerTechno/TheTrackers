@@ -8,28 +8,28 @@ import java.util.function.Supplier;
 public class BasicComponentFactory {
 
     @Contract(value = "_ -> new", pure = true)
-    public static @NotNull Supplier<IconComponent> getDefault(Icon icon) {
-        return () -> new IconComponent(icon);
+    public static @NotNull Supplier<BaseComponent> getDefault(IRenderElement element) {
+        return () -> new BaseComponent(element);
     }
 
     /**
      * 传入语句: "(blink/rainbow):(specific pattern)"
      */
     @Contract(value = "_, _ -> new", pure = true)
-    public static @NotNull Supplier<IconComponent> getIconComponent(Icon icon, @NotNull String pattern) {
+    public static @NotNull Supplier<BaseComponent> getElementComponent(IRenderElement element, @NotNull String pattern) {
         String [] patterns = pattern.split(":");
 
         try {
             int countNum;
             if (patterns[0].equals("blink")) {
                 countNum = Integer.parseInt(patterns[1]);
-                if (BlinkIconComponent.isValidPatterns(countNum)) return () -> new BlinkIconComponent(icon, countNum);
+                if (BlinkComponent.isValidPatterns(countNum)) return () -> new BlinkComponent(element, countNum);
             } else if (patterns[0].equals("rainbow")) {
                 countNum = Integer.parseInt(patterns[1]);
-                if (RainbowIconComponent.isValidPatterns(countNum)) return () -> new RainbowIconComponent(icon, countNum);
+                if (RainbowComponent.isValidPatterns(countNum)) return () -> new RainbowComponent(element, countNum);
             }
         } catch (NumberFormatException ignored) {}
-        return getDefault(icon);
+        return getDefault(element);
     }
 
     /**
@@ -40,9 +40,9 @@ public class BasicComponentFactory {
         if (patterns.length != 2) return false;
         try {
             if (patterns[0].equals("blink")) {
-                if (BlinkIconComponent.isValidPatterns(Integer.parseInt(patterns[1]))) return true;
+                if (BlinkComponent.isValidPatterns(Integer.parseInt(patterns[1]))) return true;
             } else if (patterns[0].equals("rainbow")) {
-                if (RainbowIconComponent.isValidPatterns(Integer.parseInt(patterns[1]))) return true;
+                if (RainbowComponent.isValidPatterns(Integer.parseInt(patterns[1]))) return true;
             }
         } catch (NumberFormatException e) {
             return false;
