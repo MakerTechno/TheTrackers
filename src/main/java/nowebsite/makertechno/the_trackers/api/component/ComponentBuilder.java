@@ -1,14 +1,16 @@
 package nowebsite.makertechno.the_trackers.api.component;
 
-import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-import nowebsite.makertechno.the_trackers.client.gui.icons.IconComponentFactory;
-import nowebsite.makertechno.the_trackers.client.gui.icons.Icon;
+import net.minecraft.world.item.ItemStack;
+import nowebsite.makertechno.the_trackers.client.gui.components.BasicComponentFactory;
+import nowebsite.makertechno.the_trackers.client.gui.components.IRenderElement;
+import nowebsite.makertechno.the_trackers.client.gui.components.Icon;
+import nowebsite.makertechno.the_trackers.client.gui.components.ItemComponent;
 import nowebsite.makertechno.the_trackers.client.gui.provider.TextureCache;
 import nowebsite.makertechno.the_trackers.core.tool.TextureBuildTool;
 
 import javax.annotation.Nullable;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -19,16 +21,17 @@ import java.util.function.Supplier;
 public class ComponentBuilder {
     private ComponentType type = ComponentType.DIRECT;
     private String cursorPattern = null;
-    private Supplier<Icon> icon1 = () -> Icon.NONE;
+    private Supplier<IRenderElement> icon1 = () -> Icon.NONE;
     private String component1Pattern = null;
-    private Supplier<Icon> icon2 = () -> Icon.NONE;
+    private Supplier<IRenderElement> icon2 = () -> Icon.NONE;
     private String component2Pattern = null;
-    private Supplier<Icon> icon3 = () -> Icon.NONE;
+    private Supplier<IRenderElement> icon3 = () -> Icon.NONE;
     private String component3Pattern = null;
     private boolean isSmoothMove = false;
     private boolean affectedByPlayerSettingsScale = false;
     private boolean autoLifecycle = false;
-    private Function<Float, Float> definedScaleMultiple = scale -> scale;
+    private Function<Float, Float> rescaleFunc = scale -> scale;
+    private BiFunction<Float, Float, Float> alphaTransformer = (distance, alpha) -> alpha;
 
 
     public ComponentBuilder() {}
@@ -60,10 +63,9 @@ public class ComponentBuilder {
 
     /**
      * <p>对于一般情况，该方法设置其中心图标。具有多个图标位的指针需要填充其它icon。</p>
-     * <p>将传入的物品的贴图作为图标。图标默认为空。</p>
      */
-    public ComponentBuilder setIcon1(Item item) {
-        icon1 = () -> getIcon(TextureMapping.getItemTexture(item).withPrefix("textures/"));
+    public ComponentBuilder setIcon1(ItemStack itemStack) {
+        icon1 = () -> getItemComponent(itemStack);
         return this;
     }
 
@@ -77,7 +79,7 @@ public class ComponentBuilder {
     }
 
     /**
-     * 设置图标1的容器。默认为null(获取时使用default)，设置请参见{@link IconComponentFactory}
+     * 设置图标1的容器。默认为null(获取时使用default)，设置请参见{@link BasicComponentFactory}
      */
     public ComponentBuilder setIcon1Pattern(String pattern) {
         this.component1Pattern = pattern;
@@ -89,8 +91,8 @@ public class ComponentBuilder {
      * <p>对于一般情况，该方法设置其中心图标。具有多个图标位的指针需要填充其它icon。</p>
      * <p>将传入的物品的贴图作为图标。图标默认为空。</p>
      */
-    public ComponentBuilder setIcon2(Item item) {
-        icon2 = () -> getIcon(TextureMapping.getItemTexture(item).withPrefix("textures/"));
+    public ComponentBuilder setIcon2(ItemStack itemStack) {
+        icon2 = () -> getItemComponent(itemStack);
         return this;
     }
 
@@ -104,7 +106,7 @@ public class ComponentBuilder {
     }
 
     /**
-     * 设置图标1的容器。默认为null(获取时使用default)，设置请参见{@link IconComponentFactory}
+     * 设置图标1的容器。默认为null(获取时使用default)，设置请参见{@link BasicComponentFactory}
      */
     public ComponentBuilder setIcon2Pattern(String pattern) {
         this.component2Pattern = pattern;
@@ -116,8 +118,8 @@ public class ComponentBuilder {
      * <p>对于一般情况，该方法设置其中心图标。具有多个图标位的指针需要填充其它icon。</p>
      * <p>将传入的物品的贴图作为图标。图标默认为空。</p>
      */
-    public ComponentBuilder setIcon3(Item item) {
-        icon3 = () -> getIcon(TextureMapping.getItemTexture(item).withPrefix("textures/"));
+    public ComponentBuilder setIcon3(ItemStack itemStack) {
+        icon3 = () -> getItemComponent(itemStack);
         return this;
     }
 
@@ -131,7 +133,7 @@ public class ComponentBuilder {
     }
 
     /**
-     * 设置图标1的容器。默认为null(获取时使用default)，设置请参见{@link IconComponentFactory}
+     * 设置图标1的容器。默认为null(获取时使用default)，设置请参见{@link BasicComponentFactory}
      */
     public ComponentBuilder setIcon3Pattern(String pattern) {
         this.component3Pattern = pattern;
@@ -165,8 +167,16 @@ public class ComponentBuilder {
     /**
      * 设置乘数再运算器，一般建议在这里对最终大小进行区间移动和缩放。
      * */
-    public ComponentBuilder defineScaleMultiple(Function<Float, Float> definedScaleMultipleApplier) {
-        this.definedScaleMultiple = definedScaleMultipleApplier;
+    public ComponentBuilder defineRescale(Function<Float, Float> rescale) {
+        this.rescaleFunc = rescale;
+        return this;
+    }
+
+    /**
+     * 设置透明度再运算器。
+     * */
+    public ComponentBuilder defineAlphaTransformer(BiFunction<Float, Float, Float> alphaTransformer) {
+        this.alphaTransformer = alphaTransformer;
         return this;
     }
 
@@ -183,7 +193,8 @@ public class ComponentBuilder {
                 isSmoothMove,
                 autoLifecycle,
                 affectedByPlayerSettingsScale,
-                definedScaleMultiple
+                rescaleFunc,
+                alphaTransformer
         );
     }
 
@@ -191,38 +202,45 @@ public class ComponentBuilder {
         return TextureBuildTool.initIcon("dynamic", location.withSuffix(".png"), Icon::new).orElse(Icon.NONE);
     }
 
+    private static ItemComponent getItemComponent(ItemStack stack) {
+        return new ItemComponent(stack);
+    }
+
     public static final class BuilderResult {
         public final @Nullable String component1Pattern, component2Pattern, component3Pattern, cursorPattern;
         public final ComponentType type;
-        public final Supplier<Icon> icon1, icon2, icon3;
+        public final Supplier<IRenderElement> element1, element2, element3;
         public final boolean isSmoothMove, autoLifecycle, affectedBySettings;
-        public final Function<Float, Float> multiple;
+        public final Function<Float, Float> rescale;
+        public final BiFunction<Float, Float, Float>  transformAlpha;
         private BuilderResult(
                 ComponentType type,
-                Supplier<Icon> icon1,
+                Supplier<IRenderElement> element1,
                 @Nullable String component1Pattern,
-                Supplier<Icon> icon2,
+                Supplier<IRenderElement> element2,
                 @Nullable String component2Pattern,
-                Supplier<Icon> icon3,
+                Supplier<IRenderElement> element3,
                 @Nullable String component3Pattern,
                 @Nullable String cursorPattern,
                 boolean isSmoothMove,
                 boolean autoLifecycle,
                 boolean affectedBySettings,
-                Function<Float, Float> multiple
+                Function<Float, Float> rescale,
+                BiFunction<Float, Float, Float> transformAlpha
         ) {
             this.type = type;
-            this.icon1 = icon1;
+            this.element1 = element1;
             this.component1Pattern = component1Pattern;
-            this.icon2 = icon2;
+            this.element2 = element2;
             this.component2Pattern = component2Pattern;
-            this.icon3 = icon3;
+            this.element3 = element3;
             this.component3Pattern = component3Pattern;
             this.cursorPattern = cursorPattern;
             this.isSmoothMove = isSmoothMove;
             this.autoLifecycle = autoLifecycle;
             this.affectedBySettings = affectedBySettings;
-            this.multiple = multiple;
+            this.rescale = rescale;
+            this.transformAlpha = transformAlpha;
         }
     }
 

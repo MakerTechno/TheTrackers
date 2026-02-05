@@ -5,7 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import nowebsite.makertechno.the_trackers.api.component.StaticComponent;
-import nowebsite.makertechno.the_trackers.client.gui.components.TRenderComponent;
+import nowebsite.makertechno.the_trackers.client.gui.cursors.TRenderCursor;
 
 import java.util.function.Function;
 
@@ -20,7 +20,7 @@ public class ControllableTrackerState implements StaticComponent {
     protected boolean isAlive = true;
 
     protected Function<Vec3, Vec3> applier = vec3 -> vec3;
-    public ControllableTrackerState(String identifyName, TRenderComponent component, boolean isVisible, boolean isAutoDelete) {
+    public ControllableTrackerState(String identifyName, TRenderCursor component, boolean isVisible, boolean isAutoDelete) {
         this.identifyName = identifyName;
         this.state = new TrackerStepState(component);
         this.isVisible = isVisible;

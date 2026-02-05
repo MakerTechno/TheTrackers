@@ -2,13 +2,13 @@ package nowebsite.makertechno.the_trackers.core.config;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.world.entity.EntityType;
-import nowebsite.makertechno.the_trackers.client.gui.components.TDir3BodyCursor;
-import nowebsite.makertechno.the_trackers.client.gui.components.TDirectProjCursor;
-import nowebsite.makertechno.the_trackers.client.gui.components.TRelativeCursor;
-import nowebsite.makertechno.the_trackers.client.gui.components.TRenderComponent;
-import nowebsite.makertechno.the_trackers.client.gui.icons.Icon;
-import nowebsite.makertechno.the_trackers.client.gui.icons.IconComponentFactory;
-import nowebsite.makertechno.the_trackers.client.gui.icons.IconComponent;
+import nowebsite.makertechno.the_trackers.client.gui.cursors.TDir3BodyCursor;
+import nowebsite.makertechno.the_trackers.client.gui.cursors.TDirectProjCursor;
+import nowebsite.makertechno.the_trackers.client.gui.cursors.TRelativeCursor;
+import nowebsite.makertechno.the_trackers.client.gui.cursors.TRenderCursor;
+import nowebsite.makertechno.the_trackers.client.gui.components.Icon;
+import nowebsite.makertechno.the_trackers.client.gui.components.BasicComponentFactory;
+import nowebsite.makertechno.the_trackers.client.gui.components.BaseComponent;
 import nowebsite.makertechno.the_trackers.client.gui.provider.TextureCache;
 import nowebsite.makertechno.the_trackers.core.event.TModClient;
 import org.jetbrains.annotations.NotNull;
@@ -20,8 +20,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public final class ConfigProcessor {
-    
-    private static final Pair<EntityType<?>, Supplier<? extends TRenderComponent>> OF_EMPTY =new Pair<>(null, TRenderComponent::ofNull);
+
+    private static final Pair<EntityType<?>, Supplier<? extends TRenderCursor>> OF_EMPTY =new Pair<>(null, TRenderCursor::ofNull);
 
     public static boolean isValidEntityBindCRCursor(Object o) {
         /*   entityType|pointer|entityIcon(|optionalPatterns)   */
@@ -39,14 +39,14 @@ public final class ConfigProcessor {
         if (split.length == 4) {
             String[] patterns = split[3].split("&");
             if (patterns.length != 2) return false;
-            return IconComponentFactory.hasElementPattern(patterns[0]) && IconComponentFactory.hasElementPattern(patterns[1]);
+            return BasicComponentFactory.hasElementPattern(patterns[0]) && BasicComponentFactory.hasElementPattern(patterns[1]);
         }
 
         return true;
     }
 
     @NotNull
-    public static Set<Pair<EntityType<?>, Supplier<? extends TRenderComponent>>> collectCREntityBindCursor(@NotNull List<? extends String> list) {
+    public static Set<Pair<EntityType<?>, Supplier<? extends TRenderCursor>>> collectCREntityBindCursor(@NotNull List<? extends String> list) {
         return list.stream()
                 .map(s -> {
                     String[] split = s.split("\\|");
@@ -62,26 +62,26 @@ public final class ConfigProcessor {
                     Icon icon = TextureCache.getIcon(split[2]);
                     if (!split[2].equals("none") && icon.equals(Icon.NONE)) return OF_EMPTY;
 
-                    Supplier<? extends TRenderComponent> supplier;
+                    Supplier<? extends TRenderCursor> supplier;
 
                     if (split.length == 4) {
                         String[] patterns = split[3].split("&");
                         if (patterns.length == 2 &&
-                                IconComponentFactory.hasElementPattern(patterns[0]) &&
-                                IconComponentFactory.hasElementPattern(patterns[1])) {
+                                BasicComponentFactory.hasElementPattern(patterns[0]) &&
+                                BasicComponentFactory.hasElementPattern(patterns[1])) {
                             supplier = () -> new TRelativeCursor(
-                                    IconComponentFactory.getIconComponent(pointerIcon, patterns[0]).get(),
-                                    IconComponentFactory.getIconComponent(icon, patterns[1]).get()
+                                    BasicComponentFactory.getElementComponent(pointerIcon, patterns[0]).get(),
+                                    BasicComponentFactory.getElementComponent(icon, patterns[1]).get()
                             );
-                            return new Pair<EntityType<?>, Supplier<? extends TRenderComponent>>(entityType, supplier);
+                            return new Pair<EntityType<?>, Supplier<? extends TRenderCursor>>(entityType, supplier);
                         }
                     }
 
                     supplier = () -> new TRelativeCursor(
-                            IconComponentFactory.getDefault(pointerIcon).get(),
-                            IconComponentFactory.getDefault(icon).get()
+                            BasicComponentFactory.getDefault(pointerIcon).get(),
+                            BasicComponentFactory.getDefault(icon).get()
                     );
-                    return new Pair<EntityType<?>, Supplier<? extends TRenderComponent>>(entityType, supplier);
+                    return new Pair<EntityType<?>, Supplier<? extends TRenderCursor>>(entityType, supplier);
                 })
                 .filter(p -> p != OF_EMPTY)
                 .collect(Collectors.toSet());
@@ -108,12 +108,12 @@ public final class ConfigProcessor {
 
         if (!(style[0].equals("normal") || style[0].equals("3body"))) return false;
 
-        if (split.length == 3) return IconComponentFactory.hasElementPattern(split[2]);
+        if (split.length == 3) return BasicComponentFactory.hasElementPattern(split[2]);
 
         return true;
     }
     @NotNull
-    public static Set<Pair<EntityType<?>, Supplier<? extends TRenderComponent>>> collectDTEntityBindCursor(@NotNull List<? extends String> list) {
+    public static Set<Pair<EntityType<?>, Supplier<? extends TRenderCursor>>> collectDTEntityBindCursor(@NotNull List<? extends String> list) {
         return list.stream()
                 .map(s -> {
                     String[] split = s.split("\\|");
@@ -131,18 +131,18 @@ public final class ConfigProcessor {
                         icon = TextureCache.getIcon(style[1]);
                         if (icon.equals(Icon.NONE)) return OF_EMPTY;
                     }
-                    Supplier<IconComponent> cps;
-                    if (split.length == 3) cps = IconComponentFactory.getIconComponent(icon, split[2]);
-                    else cps = IconComponentFactory.getDefault(icon);
+                    Supplier<BaseComponent> cps;
+                    if (split.length == 3) cps = BasicComponentFactory.getElementComponent(icon, split[2]);
+                    else cps = BasicComponentFactory.getDefault(icon);
 
-                    Supplier<? extends TRenderComponent> supplier;
+                    Supplier<? extends TRenderCursor> supplier;
                     if (style[0].equals("3body")){
                         supplier = () -> new TDir3BodyCursor(cps.get(), cps.get(), cps.get());
                     } else if (style[0].equals("normal")){
                         supplier = () -> new TDirectProjCursor(cps.get());
                     } else return OF_EMPTY;
 
-                    return new Pair<EntityType<?>, Supplier<? extends TRenderComponent>>(entityType, supplier);
+                    return new Pair<EntityType<?>, Supplier<? extends TRenderCursor>>(entityType, supplier);
                 })
                 .filter(p -> p != OF_EMPTY)
                 .collect(Collectors.toSet());

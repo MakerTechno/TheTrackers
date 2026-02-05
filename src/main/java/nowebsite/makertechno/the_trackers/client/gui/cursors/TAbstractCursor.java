@@ -1,4 +1,4 @@
-package nowebsite.makertechno.the_trackers.client.gui.components;
+package nowebsite.makertechno.the_trackers.client.gui.cursors;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -7,14 +7,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import nowebsite.makertechno.the_trackers.core.config.TConfig;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public abstract class TAbstractCursor implements TRenderComponent{
+public abstract class TAbstractCursor implements TRenderCursor {
 
     protected float scaleCached;
     protected boolean smoothMove = true;
     protected boolean affectedByPlayerScale = true;
-    protected Function<Float, Float> multiple = scale -> scale ;
+    protected Function<Float, Float> rescale = scale -> scale;
+    protected BiFunction<Float, Float, Float> transformAlpha = (distance, alpha) -> alpha;
 
     protected TAbstractCursor() {
         this.scaleCached = (float) TConfig.scale;
@@ -28,8 +30,12 @@ public abstract class TAbstractCursor implements TRenderComponent{
         this.affectedByPlayerScale = affectedByPlayerScale;
     }
 
-    public void setMultiple(Function<Float, Float> multiple) {
-        this.multiple = multiple;
+    public void setRescale(Function<Float, Float> rescale) {
+        this.rescale = rescale;
+    }
+
+    public void setTransformAlpha(BiFunction<Float, Float, Float> transformAlpha) {
+        this.transformAlpha = transformAlpha;
     }
 
     @Override
@@ -42,14 +48,15 @@ public abstract class TAbstractCursor implements TRenderComponent{
 
         float[] projScrPoint = getProjectScr(graphics, player, target);
 
-        float scale = multiple.apply(calculateScale(projScrPoint));
+        float scale = rescale.apply(calculateScale(projScrPoint));
 
         updateTransformer(projScrPoint, partialTick, scale);
-        RenderSystemInit(getAlpha(projScrPoint));
+        RenderSystemInit(transformAlpha.apply(getScrDistance(projScrPoint), getAlpha(projScrPoint)));
         renderInsights(graphics, projScrPoint, partialTick, scale);
         RenderSystemRestore();
     }
     protected abstract float[] getProjectScr(GuiGraphics graphics, Player player, Vec3 target);
+    protected abstract float getScrDistance(float[] projectScrPoint);
     protected float calculateScale(float[] projScrPoint) {
         return affectedByPlayerScale ? scaleCached : 1;
     }

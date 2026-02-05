@@ -1,6 +1,7 @@
 package nowebsite.makertechno.the_trackers.core.track;
 
 import net.minecraft.world.entity.Entity;
+import nowebsite.makertechno.the_trackers.TheTrackers;
 import nowebsite.makertechno.the_trackers.client.gui.TGui;
 import nowebsite.makertechno.the_trackers.core.config.TConfig;
 import org.jetbrains.annotations.Nullable;
@@ -23,12 +24,14 @@ public class TrackersMonitor {
             count = 0;
             Map<UUID, Entity> cached = EntityTracker.process();
 
-            if (cached != null) tracker.trigger(cached);
+            if (cached != null && tracker != null) tracker.trigger(cached);
+            if (tracker == null) TheTrackers.LOGGER.error("WorldSingletonTracker is null, this is an unexpected state. If you see this, please report it to developers.");
         }
     }
     public static void quit() {
+        TheTrackers.LOGGER.debug("TrackerMonitor quit.");
         TGui.setExtendTracker(null);
-        if (tracker != null) tracker.clean();
+        if (tracker != null) tracker.close();
         tracker = null;
     }
 

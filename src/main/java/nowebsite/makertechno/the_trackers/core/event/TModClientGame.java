@@ -3,8 +3,8 @@ package nowebsite.makertechno.the_trackers.core.event;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import nowebsite.makertechno.the_trackers.TheTrackers;
 import nowebsite.makertechno.the_trackers.core.config.TConfig;
 import nowebsite.makertechno.the_trackers.core.track.TrackersMonitor;
@@ -17,7 +17,7 @@ public class TModClientGame {
     }
 
     @SubscribeEvent
-    public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
+    public static void clientPlayerNetwork$LoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
         TrackersMonitor.quit();
     }
 }

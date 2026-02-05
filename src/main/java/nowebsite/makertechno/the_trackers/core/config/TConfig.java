@@ -7,7 +7,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import nowebsite.makertechno.the_trackers.TheTrackers;
-import nowebsite.makertechno.the_trackers.client.gui.components.TRenderComponent;
+import nowebsite.makertechno.the_trackers.client.gui.cursors.TRenderCursor;
 import nowebsite.makertechno.the_trackers.core.event.TModClient;
 import nowebsite.makertechno.the_trackers.core.track.EntityTracker;
 import nowebsite.makertechno.the_trackers.core.track.algorithm.ProjectAlgorithmLib;
@@ -72,6 +72,7 @@ public class TConfig {
                             "terra_entity:brain_of_cthulhu|normal|brain_of_cthulhu",
                             "terra_entity:eater_of_worlds|normal|eater_of_worlds",
                             "terra_entity:queen_bee|normal|queen_bee",
+                            "terra_entity:deerclops|normal|deerclops",
                             "terra_entity:skeletron|normal|skeletron",
                             "terra_entity:hill_of_flesh|normal|wall_of_flesh",
                             "terra_entity:wall_of_flesh|normal|wall_of_flesh",
@@ -132,8 +133,8 @@ public class TConfig {
     public static boolean trackFullAvailable;
     public static boolean headFlatAvailable;
     public static ProjectAlgorithmLib.Type projectAlgorithm;
-    public static Set<Pair<EntityType<?>, Supplier<? extends TRenderComponent>>> CRCursorWithEntities;
-    public static Set<Pair<EntityType<?>, Supplier<? extends TRenderComponent>>> DTCursorWithEntities;
+    public static Set<Pair<EntityType<?>, Supplier<? extends TRenderCursor>>> CRCursorWithEntities;
+    public static Set<Pair<EntityType<?>, Supplier<? extends TRenderCursor>>> DTCursorWithEntities;
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event) {

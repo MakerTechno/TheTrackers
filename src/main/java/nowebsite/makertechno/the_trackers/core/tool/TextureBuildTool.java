@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import nowebsite.makertechno.the_trackers.TheTrackers;
-import nowebsite.makertechno.the_trackers.client.gui.icons.Icon;
+import nowebsite.makertechno.the_trackers.client.gui.components.Icon;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;

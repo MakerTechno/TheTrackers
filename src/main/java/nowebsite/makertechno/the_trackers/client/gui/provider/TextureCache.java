@@ -4,7 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import nowebsite.makertechno.the_trackers.TheTrackers;
-import nowebsite.makertechno.the_trackers.client.gui.icons.Icon;
+import nowebsite.makertechno.the_trackers.client.gui.components.Icon;
 import nowebsite.makertechno.the_trackers.core.tool.TextureBuildTool;
 import org.jetbrains.annotations.Contract;
 

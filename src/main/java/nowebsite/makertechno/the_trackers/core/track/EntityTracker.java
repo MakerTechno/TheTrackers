@@ -8,7 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.entity.PartEntity;
 import nowebsite.makertechno.the_trackers.client.gui.TGui;
-import nowebsite.makertechno.the_trackers.client.gui.components.TRenderComponent;
+import nowebsite.makertechno.the_trackers.client.gui.cursors.TRenderCursor;
 import nowebsite.makertechno.the_trackers.core.config.TConfig;
 import nowebsite.makertechno.the_trackers.core.track.states.TrackerStepState;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +25,7 @@ public class EntityTracker {
     /** 缓存的渲染队列 */
     private static final Map<UUID, TrackerStepState> RENDERING = new HashMap<>();
     /** 规则组 */
-    private static final List<Pair<EntityType<?>, Supplier<? extends TRenderComponent>>> ALL_GROUPS = new ArrayList<>();
+    private static final List<Pair<EntityType<?>, Supplier<? extends TRenderCursor>>> ALL_GROUPS = new ArrayList<>();
     /** 框选距离 */
     public static final AABB PICK_RANGE = new AABB(
             - 64.0D,
@@ -88,7 +88,7 @@ public class EntityTracker {
      * 判断实体种类并尝试为其创建对应种类的指针对。
      */
     private static void tryCreateNew(Entity entity) {
-        for (Pair<EntityType<?>, Supplier<? extends TRenderComponent>> pair : ALL_GROUPS) {
+        for (Pair<EntityType<?>, Supplier<? extends TRenderCursor>> pair : ALL_GROUPS) {
             if (isTargetType(pair.getFirst(), entity)) {
                 TrackerStepState state = new TrackerStepState(pair.getSecond().get());
                 state.updatePos(entity.getRopeHoldPosition(0));

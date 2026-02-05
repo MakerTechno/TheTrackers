@@ -1,16 +1,16 @@
-package nowebsite.makertechno.the_trackers.client.gui.icons;
+package nowebsite.makertechno.the_trackers.client.gui.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 
-public class BlinkIconComponent extends IconComponent {
+public class BlinkComponent extends BaseComponent {
     private final int intervalBlink;
     private int intervalCount;
     private float alpha;
     private boolean reverse;
-    public BlinkIconComponent(Icon icon, int intervalBlink) {
-        super(icon);
+    public BlinkComponent(IRenderElement element, int intervalBlink) {
+        super(element);
         this.intervalBlink = intervalBlink;
         this.intervalCount = 0;
     }

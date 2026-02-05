@@ -1,13 +1,13 @@
 package nowebsite.makertechno.the_trackers.core.track.states;
 
 import net.minecraft.world.entity.Entity;
-import nowebsite.makertechno.the_trackers.client.gui.components.TRenderComponent;
+import nowebsite.makertechno.the_trackers.client.gui.cursors.TRenderCursor;
 
 public class TickLimitedTrackerState extends ControllableTrackerState{
     private final int maxTicked;
 
     private int ticking = 0;
-    public TickLimitedTrackerState(String identifyName, TRenderComponent component, int maxTicked, boolean isVisible) {
+    public TickLimitedTrackerState(String identifyName, TRenderCursor component, int maxTicked, boolean isVisible) {
         super(identifyName, component, isVisible, false);
         this.maxTicked = maxTicked;
     }
