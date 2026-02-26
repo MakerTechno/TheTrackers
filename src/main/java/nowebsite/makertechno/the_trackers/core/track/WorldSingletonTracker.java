@@ -151,13 +151,13 @@ public class WorldSingletonTracker {
     }
 
 
-    public @Nullable List<ControllableTrackerState> getEntityTrackingComponentFromModId(String modId) {
-        return entityPointers.get(modId);
+    public @Nullable List<SimpleComponent> getEntityTrackingComponentFromModId(String modId) {
+        return entityPointers.get(modId).stream().map(state -> (SimpleComponent) state).toList();
     }
 
-    public @Nullable List<ControllableTrackerState> getEntityTrackingComponentFromModId(String modId, String identifyName) {
-        List<ControllableTrackerState> states = getEntityTrackingComponentFromModId(modId);
-        return states == null ? null : states.stream().filter(pointer -> pointer.getIdentifyName().equals(identifyName)).toList();
+    public @Nullable List<SimpleComponent> getEntityTrackingComponentFromModId(String modId, String identifyName) {
+        List<ControllableTrackerState> states = entityPointers.get(modId);
+        return states == null ? null : states.stream().filter(pointer -> pointer.getIdentifyName().equals(identifyName)).map(state -> (SimpleComponent) state).toList();
     }
 
 
