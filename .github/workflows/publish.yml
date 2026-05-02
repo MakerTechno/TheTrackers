@@ -33,5 +33,5 @@ jobs:
           chmod +x gradlew
           ./gradlew build publish
         env:
-          MAGIC_TEAM_USERNAME: ${{ secrets.MAVEN_TEAM_USERNAME }}
-          MAGIC_TEAM_TOKEN: ${{ secrets.MAVEN_TEAM_TOKEN }}
+          MAVEN_TEAM_USERNAME: ${{ secrets.MAVEN_TEAM_USERNAME }}
+          MAVEN_TEAM_TOKEN: ${{ secrets.MAVEN_TEAM_TOKEN }}
