@@ -37,12 +37,19 @@ public class ModChineseLanguageProvider extends LanguageProvider {
         );
         addConfigurationTranslation("track_full_available", "锁定定位式指针开关", "启用或禁用锁定定位式指针");
         addConfigurationTranslation("head_flat_available", "经度轴开关", "启用或禁用经度轴条");
+        addConfigurationTranslation("track_secondary_enemies", "次要追踪开关", "启用或禁用追踪次要目标");
 
         addConfigurationButtonTranslation(
-                "center_relative_tracking",
-                "中心环绕式跟踪清单",
-                "跟踪实体的设置",
-                "带有光标类型的实体类型列表，用\"|\"分隔"
+            "center_relative_tracking",
+            "中心环绕式跟踪清单",
+            "跟踪实体的设置",
+            "带有光标类型的实体类型列表，用\"|\"分隔"
+        );
+        addConfigurationButtonTranslation(
+            "center_relative_tracking_secondary",
+            "中心环绕式次要跟踪清单",
+            "跟踪实体的设置",
+            "带有光标类型的实体类型列表，用\"|\"分隔"
         );
 
         addConfigurationButtonTranslation(

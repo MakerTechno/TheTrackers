@@ -102,7 +102,10 @@ public class EntityTracker {
      */
     public static void reCalcAllEntityGroups() {
         ALL_GROUPS.clear();
-        if (TConfig.centerRelativeAvailable) ALL_GROUPS.addAll(TConfig.CRCursorWithEntities);
+        if (TConfig.centerRelativeAvailable) {
+            ALL_GROUPS.addAll(TConfig.CRCursorWithEntities);
+            if (TConfig.secondaryAvailable) ALL_GROUPS.addAll(TConfig.CRCursorWithSecondaryEntities);
+        }
         if (TConfig.trackFullAvailable) ALL_GROUPS.addAll(TConfig.DTCursorWithEntities);
         //all.addAll(else);
     }

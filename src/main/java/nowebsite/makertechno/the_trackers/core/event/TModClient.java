@@ -22,6 +22,7 @@ public final class TModClient {
     public static void onLoadComplete(FMLLoadCompleteEvent event) {
         isLoaded = true;
         TConfig.CRCursorWithEntities = ConfigProcessor.collectCREntityBindCursor(TConfig.CENTER_RELATIVE_BIND.get());
+        TConfig.CRCursorWithSecondaryEntities = ConfigProcessor.collectCREntityBindCursor(TConfig.CENTER_RELATIVE_BIND_SECONDARY.get());
         TConfig.DTCursorWithEntities = ConfigProcessor.collectDTEntityBindCursor(TConfig.TRACK_FULL_BIND.get());
         EntityTracker.reCalcAllEntityGroups();
     }

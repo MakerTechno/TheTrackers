@@ -6,6 +6,9 @@
   "the_trackers.configuration.center_relative_tracking": "中心环绕式跟踪清单",
   "the_trackers.configuration.center_relative_tracking.button": "跟踪实体的设置",
   "the_trackers.configuration.center_relative_tracking.tooltip": "带有光标类型的实体类型列表，用\"|\"分隔",
+  "the_trackers.configuration.center_relative_tracking_secondary": "中心环绕式次要跟踪清单",
+  "the_trackers.configuration.center_relative_tracking_secondary.button": "跟踪实体的设置",
+  "the_trackers.configuration.center_relative_tracking_secondary.tooltip": "带有光标类型的实体类型列表，用\"|\"分隔",
   "the_trackers.configuration.gui_scale": "追踪指针大小",
   "the_trackers.configuration.gui_scale.tooltip": "默认值0.6，这在一般1080p设备上表现很好",
   "the_trackers.configuration.head_flat_available": "经度轴开关",
@@ -23,5 +26,7 @@
   "the_trackers.configuration.track_full_available.tooltip": "启用或禁用锁定定位式指针",
   "the_trackers.configuration.track_full_tracking": "绑定定位式跟踪清单",
   "the_trackers.configuration.track_full_tracking.button": "跟踪实体的设置",
-  "the_trackers.configuration.track_full_tracking.tooltip": "带有光标类型的实体类型列表，用\"|\"分隔"
+  "the_trackers.configuration.track_full_tracking.tooltip": "带有光标类型的实体类型列表，用\"|\"分隔",
+  "the_trackers.configuration.track_secondary_enemies": "次要追踪开关",
+  "the_trackers.configuration.track_secondary_enemies.tooltip": "启用或禁用追踪次要目标"
 }
