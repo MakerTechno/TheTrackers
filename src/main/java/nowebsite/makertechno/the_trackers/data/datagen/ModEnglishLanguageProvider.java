@@ -54,16 +54,27 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
                 "Enable or disable full screen tag cursors"
         );
         addConfigurationTranslation(
-                "head_flat_available",
-                "Longitude hud available",
-                "Enable or disable longitude display"
+            "head_flat_available",
+            "Longitude hud available",
+            "Enable or disable longitude display"
+        );
+        addConfigurationTranslation(
+            "track_secondary_enemies",
+            "Secondary tracking available",
+            "Enable or disable tracking secondary targets"
         );
 
         addConfigurationButtonTranslation(
-                "center_relative_tracking",
-                "Tracking settings for center-relative cursors",
-                "Settings for tracking entities",
-                "List of entity types with cursor types, separated with \"|\""
+            "center_relative_tracking",
+            "Tracking settings for center-relative cursors",
+            "Settings for tracking entities",
+            "List of entity types with cursor types, separated with \"|\""
+        );
+        addConfigurationButtonTranslation(
+            "center_relative_tracking_secondary",
+            "Secondary tracking settings for center-relative cursors",
+            "Settings for tracking entities",
+            "List of entity types with cursor types, separated with \"|\""
         );
         addConfigurationButtonTranslation(
                 "track_full_tracking",

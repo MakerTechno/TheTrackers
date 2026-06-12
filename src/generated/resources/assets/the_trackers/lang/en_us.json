@@ -6,6 +6,9 @@
   "the_trackers.configuration.center_relative_tracking": "Tracking settings for center-relative cursors",
   "the_trackers.configuration.center_relative_tracking.button": "Settings for tracking entities",
   "the_trackers.configuration.center_relative_tracking.tooltip": "List of entity types with cursor types, separated with \"|\"",
+  "the_trackers.configuration.center_relative_tracking_secondary": "Secondary tracking settings for center-relative cursors",
+  "the_trackers.configuration.center_relative_tracking_secondary.button": "Settings for tracking entities",
+  "the_trackers.configuration.center_relative_tracking_secondary.tooltip": "List of entity types with cursor types, separated with \"|\"",
   "the_trackers.configuration.gui_scale": "The scale of tracking cursors",
   "the_trackers.configuration.gui_scale.tooltip": "Usually 0.6 on 1080p monitors",
   "the_trackers.configuration.head_flat_available": "Longitude hud available",
@@ -23,5 +26,7 @@
   "the_trackers.configuration.track_full_available.tooltip": "Enable or disable full screen tag cursors",
   "the_trackers.configuration.track_full_tracking": "Tracking settings for full-track cursors",
   "the_trackers.configuration.track_full_tracking.button": "Settings for tracking entities",
-  "the_trackers.configuration.track_full_tracking.tooltip": "List of entity types with cursor types, separated with \"|\""
+  "the_trackers.configuration.track_full_tracking.tooltip": "List of entity types with cursor types, separated with \"|\"",
+  "the_trackers.configuration.track_secondary_enemies": "Secondary tracking available",
+  "the_trackers.configuration.track_secondary_enemies.tooltip": "Enable or disable tracking secondary targets"
 }
