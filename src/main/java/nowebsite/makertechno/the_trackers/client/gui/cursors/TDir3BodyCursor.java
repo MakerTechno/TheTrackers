@@ -1,5 +1,6 @@
 package nowebsite.makertechno.the_trackers.client.gui.cursors;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.gui.GuiGraphics;
@@ -82,6 +83,7 @@ public class TDir3BodyCursor extends TDirectProjCursor {
 
             stack.popPose();
         }
+        RenderSystem.resetTextureMatrix();
     }
 
 
@@ -113,6 +115,7 @@ public class TDir3BodyCursor extends TDirectProjCursor {
         } / 2f * scale, 0f);
         stack.scale(scale, scale, 1);
 
+        RenderSystem.applyModelViewMatrix();
         switch (index) {
             case 0 -> component.render(graphics, partialTick);
             case 1 -> component2.render(graphics, partialTick);

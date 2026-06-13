@@ -96,6 +96,7 @@ public class TRelativeCursor extends TAbstractCursor {
         stack.pushPose();
         translateAndRenderComponents(graphics, projScrPoint, pointerIconComponent, entityIconComponent, stack, partialTick, scale);
         stack.popPose();
+        RenderSystem.applyModelViewMatrix();
     }
 
     protected void translateAndRenderComponents(
@@ -125,6 +126,7 @@ public class TRelativeCursor extends TAbstractCursor {
             stack.translate(pw, ph, 0);
             stack.translate(0, -this.pickDirect* pointerScale, 0);
             stack.scale(pointerScale, pointerScale, 1);
+            RenderSystem.applyModelViewMatrix();
 
             /* go on */
             pointerIconComponent.render(graphics, partialTick);
@@ -144,10 +146,12 @@ public class TRelativeCursor extends TAbstractCursor {
                 stack.translate(-ew, -eh, 0);
 
                 stack.scale(entityScale, entityScale, 1);
+                RenderSystem.applyModelViewMatrix();
 
                 /* go on */
                 entityIconComponent.render(graphics, partialTick);
                 /* end of icon rend */
+                RenderSystem.resetTextureMatrix();
             }
         }
         stack.popPose(); // 1

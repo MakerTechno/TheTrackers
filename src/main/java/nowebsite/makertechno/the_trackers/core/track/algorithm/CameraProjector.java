@@ -14,7 +14,7 @@ public class CameraProjector {
         final Matrix4f projectionMatrix = renderer.getProjectionMatrix(renderer.getFov(camera, 0, true));
 
         final Matrix4f viewMatrix = new Matrix4f()
-            .rotation(camera.rotation().conjugate(new Quaternionf()))
+            .rotation(rotationFix(camera.rotation().conjugate(new Quaternionf())))
             .translate((float) -cameraPos.x, (float) -cameraPos.y, (float) -cameraPos.z);
 
         final Matrix4f mat = new Matrix4f().mul(projectionMatrix).mul(viewMatrix);
@@ -39,4 +39,7 @@ public class CameraProjector {
         return new float[]{x, y, distanceToCenter, distanceToTarget};
     }
 
+    private static Quaternionf rotationFix(Quaternionf q) {
+        return new Quaternionf(q.z, q.w, -q.x, -q.y);
+    }
 }

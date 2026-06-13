@@ -93,6 +93,7 @@ public class TDirectProjCursor extends TAbstractCursor {
         PoseStack.pushPose();
         translateAndRenderComponents(graphics, component, PoseStack, partialTick, scale);
         PoseStack.popPose();
+        RenderSystem.applyModelViewMatrix();
     }
 
     protected void translateAndRenderComponents(
@@ -110,7 +111,9 @@ public class TDirectProjCursor extends TAbstractCursor {
         );
         stack.translate(transformer.x , transformer.y, 0);
         stack.scale(scale, scale, 1);
+        RenderSystem.applyModelViewMatrix();
 
         component.render(graphics, partialTick);
+        RenderSystem.resetTextureMatrix();
     }
 }
