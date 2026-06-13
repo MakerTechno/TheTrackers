@@ -31,11 +31,10 @@ public class CameraProjector {
         if (target4f.w <= 0.0f) {
             if (target4f.x < 0) {
                 x = -100;
-                y = -100;
             } else {
                 x = windowWidth + 100;
-                y = -100;
             }
+            y = -100;
         }
         return new float[]{x, y, distanceToCenter, distanceToTarget};
     }

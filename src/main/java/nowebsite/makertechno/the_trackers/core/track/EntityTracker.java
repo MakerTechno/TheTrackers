@@ -6,7 +6,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.entity.PartEntity;
+import net.minecraftforge.entity.PartEntity;
 import nowebsite.makertechno.the_trackers.client.gui.TGui;
 import nowebsite.makertechno.the_trackers.client.gui.cursors.TRenderCursor;
 import nowebsite.makertechno.the_trackers.core.config.TConfig;

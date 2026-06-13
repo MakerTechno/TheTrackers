@@ -1,8 +1,8 @@
 package nowebsite.makertechno.the_trackers.data.datagen;
 
 import net.minecraft.data.PackOutput;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.minecraftforge.common.data.LanguageProvider;
+import net.minecraftforge.fml.config.ModConfig;
 import nowebsite.makertechno.the_trackers.TheTrackers;
 
 public class ModEnglishLanguageProvider extends LanguageProvider {

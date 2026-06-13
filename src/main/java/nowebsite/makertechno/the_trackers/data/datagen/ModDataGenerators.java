@@ -2,7 +2,7 @@ package nowebsite.makertechno.the_trackers.data.datagen;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.minecraftforge.data.event.GatherDataEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class ModDataGenerators {

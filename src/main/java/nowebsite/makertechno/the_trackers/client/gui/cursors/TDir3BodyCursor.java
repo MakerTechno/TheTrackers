@@ -1,10 +1,10 @@
 package nowebsite.makertechno.the_trackers.client.gui.cursors;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Mth;
 import nowebsite.makertechno.the_trackers.client.gui.components.BaseComponent;
-import org.joml.Matrix4fStack;
 
 /**
  * 三维投影指针变体，指针位于目标外侧环绕目标。
@@ -71,23 +71,21 @@ public class TDir3BodyCursor extends TDirectProjCursor {
     protected void translateAndRenderComponents(
             GuiGraphics graphics,
             BaseComponent component,
-            Matrix4fStack stack,
+            PoseStack stack,
             float partialTick,
             float scale
     ) {
         for (int i = 0; i < 3; i++) {
-            stack.pushMatrix();
+            stack.pushPose();
 
             renderComponent(graphics, component, stack, partialTick, scale, i);
 
-            stack.popMatrix();
+            stack.popPose();
         }
-
-        RenderSystem.resetTextureMatrix();
     }
 
 
-    private void renderComponent(GuiGraphics graphics, BaseComponent component, Matrix4fStack stack, float partialTick, float scale, int index) {
+    private void renderComponent(GuiGraphics graphics, BaseComponent component, PoseStack stack, float partialTick, float scale, int index) {
         scale = switch (index) {
             case 0 -> scale * component.rescale();
             case 1 -> scale * component2.rescale();
@@ -101,7 +99,7 @@ public class TDir3BodyCursor extends TDirectProjCursor {
         float theta = shouldFaceCenter ? (float) Math.atan2(b3Transformer.y - py, b3Transformer.x - px) + Mth.HALF_PI : angle;
 
         stack.translate(px, py, 0f);
-        stack.rotateZ(theta);
+        stack.mulPose(Axis.ZP.rotation(theta));
         stack.translate(-(float) switch (index) {
             case 0 -> component.getElement().width();
             case 1 -> component2.getElement().width();
@@ -113,9 +111,8 @@ public class TDir3BodyCursor extends TDirectProjCursor {
             case 2 -> component3.getElement().height();
             default -> 0;
         } / 2f * scale, 0f);
-        stack.scale(scale);
+        stack.scale(scale, scale, 1);
 
-        RenderSystem.applyModelViewMatrix();
         switch (index) {
             case 0 -> component.render(graphics, partialTick);
             case 1 -> component2.render(graphics, partialTick);

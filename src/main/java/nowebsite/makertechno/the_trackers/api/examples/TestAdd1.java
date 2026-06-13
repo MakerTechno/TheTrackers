@@ -5,16 +5,18 @@ import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.client.event.ScreenEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import nowebsite.makertechno.the_trackers.TheTrackers;
 import nowebsite.makertechno.the_trackers.api.component.ComponentBuilder;
 import nowebsite.makertechno.the_trackers.api.component.StaticComponent;
 import nowebsite.makertechno.the_trackers.core.track.TrackersMonitor;
 import nowebsite.makertechno.the_trackers.core.track.WorldSingletonTracker;
 
-//@EventBusSubscriber(Dist.CLIENT)
+//@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 /** An example adding death point tag to world. */
 public class TestAdd1 {
     private static final ComponentBuilder.BuilderResult posTo0 = new ComponentBuilder()

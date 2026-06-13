@@ -2,11 +2,11 @@ package nowebsite.makertechno.the_trackers.core.config;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.world.entity.EntityType;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.event.config.ModConfigEvent;
-import net.neoforged.fml.loading.LoadingModList;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.minecraftforge.fml.loading.LoadingModList;
 import nowebsite.makertechno.the_trackers.TheTrackers;
 import nowebsite.makertechno.the_trackers.client.gui.cursors.TRenderCursor;
 import nowebsite.makertechno.the_trackers.core.event.TModClient;
@@ -17,61 +17,61 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
-@EventBusSubscriber(modid = TheTrackers.MOD_ID)
+@Mod.EventBusSubscriber(modid = TheTrackers.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TConfig {
     public static boolean isModLoaded(String modid) {
         return LoadingModList.get().getModFileById(modid) != null;
     }
     public static final boolean TE_LOADED = isModLoaded("terra_entity");
-    private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
+    private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
     /* Basic settings. */
-    private static final ModConfigSpec.BooleanValue AVAILABLE = BUILDER
+    private static final ForgeConfigSpec.BooleanValue AVAILABLE = BUILDER
             .comment("Enable tracking pointer")
             .translation("the_trackers.configuration.available")
             .define("Available", true);
-    private static final ModConfigSpec.DoubleValue GUI_SCALE = BUILDER
+    private static final ForgeConfigSpec.DoubleValue GUI_SCALE = BUILDER
             .comment("Scale of cursor")
             .translation("the_trackers.configuration.gui_scale")
             .defineInRange("Scale",0.6, 0.01, 4);
-    private static final ModConfigSpec.IntValue MAX_TRACK_QUANTITY = BUILDER
+    private static final ForgeConfigSpec.IntValue MAX_TRACK_QUANTITY = BUILDER
             .comment("Max tracking quantity")
             .translation("the_trackers.configuration.quantity")
             .defineInRange("Max quantity",10, 1, 400);
-    private static final ModConfigSpec.IntValue REFRESH_POS_INTERVAL = BUILDER
+    private static final ForgeConfigSpec.IntValue REFRESH_POS_INTERVAL = BUILDER
             .comment("Interval between world position refresh")
             .translation("the_trackers.configuration.interval")
             .defineInRange("Interval", 1, 1, 160);
 
     /* HUD mode control. */
-    private static final ModConfigSpec.BooleanValue CENTER_RELATIVE_AVAILABLE = BUILDER
+    private static final ForgeConfigSpec.BooleanValue CENTER_RELATIVE_AVAILABLE = BUILDER
             .comment("Enable center relative icon display")
             .translation("the_trackers.configuration.center_relative_available")
             .define("Center relative available", true);
     // Specific setting for center relative mode.
-    public static final ModConfigSpec.EnumValue<ProjectAlgorithmLib.Type> PROJECT_ALGORITHM = BUILDER
+    public static final ForgeConfigSpec.EnumValue<ProjectAlgorithmLib.Type> PROJECT_ALGORITHM = BUILDER
             .comment("The algorithm of center rela projection")
             .translation("the_trackers.configuration.project_algorithm")
             .defineEnum("Project algorithm", ProjectAlgorithmLib.Type.AITOFF);
 
-    private static final ModConfigSpec.BooleanValue TRACK_FULL_AVAILABLE = BUILDER
+    private static final ForgeConfigSpec.BooleanValue TRACK_FULL_AVAILABLE = BUILDER
             .comment("Enable full track icon display")
             .translation("the_trackers.configuration.track_full_available")
             .define("Track full available", false);
-    private static final ModConfigSpec.BooleanValue HEAD_FLAT_AVAILABLE = BUILDER
+    private static final ForgeConfigSpec.BooleanValue HEAD_FLAT_AVAILABLE = BUILDER
             .comment("Enable longitude icon display")
             .translation("the_trackers.configuration.head_flat_available")
             .define("Head flat available", false);
 
 
     /* Switch for those unwelcome functions */
-    public static final ModConfigSpec.BooleanValue TRACK_SECONDARY_ENEMIES = BUILDER
+    public static final ForgeConfigSpec.BooleanValue TRACK_SECONDARY_ENEMIES = BUILDER
         .comment("Enable pointing secondary marked enemies")
         .translation("the_trackers.configuration.track_secondary_enemies")
         .define("Secondary track available", false);
 
     /* Tracking list */
-    public static final ModConfigSpec.ConfigValue<List<? extends String>> CENTER_RELATIVE_BIND = BUILDER
+    public static final ForgeConfigSpec.ConfigValue<List<? extends String>> CENTER_RELATIVE_BIND = BUILDER
         .comment("List of entity types with cursors for center relative display, separated with \"|\". e.g. EntityType|PointerIconType|EntityIconType(|OptionalValue)")
         .translation("the_trackers.configuration.center_relative_tracking")
         .defineList(
@@ -93,11 +93,10 @@ public class TConfig {
                     "minecraft:ender_dragon|normal|ender_dragon_head",
                     "minecraft:wither|normal_white|wither_head"
             ),
-            () -> "minecraft:player|normal_green|none",
             ConfigProcessor::isValidEntityBindCRCursor
         );
 
-    public static final ModConfigSpec.ConfigValue<List<? extends String>> CENTER_RELATIVE_BIND_SECONDARY = BUILDER
+    public static final ForgeConfigSpec.ConfigValue<List<? extends String>> CENTER_RELATIVE_BIND_SECONDARY = BUILDER
         .comment("Secondary list of entity types with cursors for center relative display, separated with \"|\". e.g. EntityType|PointerIconType|EntityIconType(|OptionalValue)")
         .translation("the_trackers.configuration.center_relative_tracking_secondary")
         .defineList(
@@ -133,11 +132,10 @@ public class TConfig {
                 "terra_entity:wither_bone_serpent|normal|none",
                 "terra_entity:meteor_head|normal|none"
             ) : List.of(),
-            () -> "minecraft:player|normal_green|none",
             ConfigProcessor::isValidEntityBindCRCursor
         );
 
-    public static final ModConfigSpec.ConfigValue<List<? extends String>> TRACK_FULL_BIND = BUILDER
+    public static final ForgeConfigSpec.ConfigValue<List<? extends String>> TRACK_FULL_BIND = BUILDER
             .comment("List of entity types with cursors for full track display, separated with \"|\"")
             .translation("the_trackers.configuration.track_full_tracking")
             .defineList(
@@ -145,11 +143,10 @@ public class TConfig {
                     List.of(
                         "minecraft:wither|normal:point_x"
                     ),
-                () -> "minecraft:player|normal:normal_green",
                 ConfigProcessor::isValidCREntityBindDTCursor
             );
 
-    public static final ModConfigSpec SPEC = BUILDER.build();
+    public static final ForgeConfigSpec SPEC = BUILDER.build();
     public static boolean available;
     public static double scale;
     public static int maxTrackingQuantity;

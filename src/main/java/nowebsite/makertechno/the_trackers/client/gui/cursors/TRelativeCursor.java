@@ -1,6 +1,8 @@
 package nowebsite.makertechno.the_trackers.client.gui.cursors;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -10,7 +12,6 @@ import nowebsite.makertechno.the_trackers.client.gui.components.IRenderElement;
 import nowebsite.makertechno.the_trackers.client.gui.components.Icon;
 import nowebsite.makertechno.the_trackers.core.config.TConfig;
 import nowebsite.makertechno.the_trackers.core.track.algorithm.RelativeProjector;
-import org.joml.Matrix4fStack;
 
 public class TRelativeCursor extends TAbstractCursor {
 
@@ -91,11 +92,10 @@ public class TRelativeCursor extends TAbstractCursor {
 
     @Override
     protected void renderInsights(GuiGraphics graphics, float[] projScrPoint, float partialTick, float scale) {
-        Matrix4fStack stack = RenderSystem.getModelViewStack();
-        stack.pushMatrix();
+        PoseStack stack = RenderSystem.getModelViewStack();
+        stack.pushPose();
         translateAndRenderComponents(graphics, projScrPoint, pointerIconComponent, entityIconComponent, stack, partialTick, scale);
-        stack.popMatrix();
-        RenderSystem.applyModelViewMatrix();
+        stack.popPose();
     }
 
     protected void translateAndRenderComponents(
@@ -103,7 +103,7 @@ public class TRelativeCursor extends TAbstractCursor {
             float[] projScrPoint,
             BaseComponent pointerComponent,
             BaseComponent entityComponent,
-            Matrix4fStack stack,
+            PoseStack stack,
             float partialTick,
             float scale
     ) {
@@ -119,13 +119,12 @@ public class TRelativeCursor extends TAbstractCursor {
 
         stack.translate((float) graphics.guiWidth() / 2, (float) graphics.guiHeight() / 2, 0);
 
-        stack.rotateZ(transformer.radius);
-        stack.pushMatrix(); // 2
+        stack.mulPose(Axis.ZP.rotation(transformer.radius));
+        stack.pushPose(); // 2
         {
             stack.translate(pw, ph, 0);
             stack.translate(0, -this.pickDirect* pointerScale, 0);
             stack.scale(pointerScale, pointerScale, 1);
-            RenderSystem.applyModelViewMatrix();
 
             /* go on */
             pointerIconComponent.render(graphics, partialTick);
@@ -133,27 +132,25 @@ public class TRelativeCursor extends TAbstractCursor {
 
             if (icon != Icon.NONE) {
                 // roll back
-                stack.popMatrix(); // 1
-                stack.pushMatrix(); // 2
+                stack.popPose(); // 1
+                stack.pushPose(); // 2
                 stack.translate(-ew, -eh, 0);
 
                 // Maximum the distance as diagonal distance and round up.
                 stack.translate(0, transformer.dist, 0);
 
                 stack.translate(ew, eh, 0);
-                stack.rotateZ(-radius);  // A funny delayed rot for icon
+                stack.mulPose(Axis.ZP.rotation(-radius));  // A funny delayed rot for icon
                 stack.translate(-ew, -eh, 0);
 
                 stack.scale(entityScale, entityScale, 1);
-                RenderSystem.applyModelViewMatrix();
 
                 /* go on */
                 entityIconComponent.render(graphics, partialTick);
                 /* end of icon rend */
-                RenderSystem.resetTextureMatrix();
             }
         }
-        stack.popMatrix(); // 1
+        stack.popPose(); // 1
     }
 
 }

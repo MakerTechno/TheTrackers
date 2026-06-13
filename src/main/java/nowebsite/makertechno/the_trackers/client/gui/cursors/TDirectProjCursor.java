@@ -1,6 +1,7 @@
 package nowebsite.makertechno.the_trackers.client.gui.cursors;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
@@ -10,7 +11,6 @@ import net.minecraft.world.phys.Vec3;
 import nowebsite.makertechno.the_trackers.client.gui.components.BaseComponent;
 import nowebsite.makertechno.the_trackers.core.track.algorithm.CameraProjector;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix4fStack;
 
 /**
  * 三维投影型指针，直接反应世界坐标投影。
@@ -89,17 +89,16 @@ public class TDirectProjCursor extends TAbstractCursor {
     }
 
     protected void renderInsights(GuiGraphics graphics, float[] projScrPoint, float partialTick, float scale) {
-        Matrix4fStack matrix4fStack = RenderSystem.getModelViewStack();
-        matrix4fStack.pushMatrix();
-        translateAndRenderComponents(graphics, component, matrix4fStack, partialTick, scale);
-        matrix4fStack.popMatrix();
-        RenderSystem.applyModelViewMatrix();
+        PoseStack PoseStack = RenderSystem.getModelViewStack();
+        PoseStack.pushPose();
+        translateAndRenderComponents(graphics, component, PoseStack, partialTick, scale);
+        PoseStack.popPose();
     }
 
     protected void translateAndRenderComponents(
             GuiGraphics graphics,
             BaseComponent component,
-            Matrix4fStack stack,
+            PoseStack stack,
             float partialTick,
             float scale
     ) {
@@ -111,10 +110,7 @@ public class TDirectProjCursor extends TAbstractCursor {
         );
         stack.translate(transformer.x , transformer.y, 0);
         stack.scale(scale, scale, 1);
-        RenderSystem.applyModelViewMatrix();
 
         component.render(graphics, partialTick);
-
-        RenderSystem.resetTextureMatrix();
     }
 }

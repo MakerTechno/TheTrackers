@@ -101,22 +101,25 @@ public class WorldSingletonTracker {
      */
     public SimpleComponent attendMultiComponent(String modID, String identifyName, ComponentBuilder.BuilderResult[] results, UUID target) throws IllegalArgumentException, UnsupportedOperationException {
         @Nullable ControllableTrackerState trackerState = questSortedEntityPointers.get(target);
-        switch (trackerState) {
-            case null -> throw new IllegalArgumentException("UUID named " + target + " not found on tracking list!");
-            case TickLimitedTrackerState ignored -> throw new UnsupportedOperationException("Tick limited component couldn't be replaced");
-            case ControllableTrackerStateEx ex -> {
-                TRenderCursor[] components = new TRenderCursor[results.length];
-                for (int i = 0; i < results.length; i++) {
-                    components[i] = BuilderResultComposer.compose(results[i]);
-                }
-                TrackerStepState[] newCP = Arrays.copyOf(ex.getStates(), ex.getStates().length + results.length);
-                for (int i = 0; i < results.length; i++) {
-                    newCP[ex.getStates().length + i] = new TrackerStepState(components[i]);
-                }
-                ex.setStates(newCP);
-                return ex;
+        if (trackerState == null) {
+            throw new IllegalArgumentException("UUID named " + target + " not found on tracking list!");
+        }
+
+        if (trackerState instanceof TickLimitedTrackerState) {
+            throw new UnsupportedOperationException("Tick limited component couldn't be replaced");
+        }
+
+        if (trackerState instanceof ControllableTrackerStateEx ex) {
+            TRenderCursor[] components = new TRenderCursor[results.length];
+            for (int i = 0; i < results.length; i++) {
+                components[i] = BuilderResultComposer.compose(results[i]);
             }
-            default -> {}
+            TrackerStepState[] newCP = Arrays.copyOf(ex.getStates(), ex.getStates().length + results.length);
+            for (int i = 0; i < results.length; i++) {
+                newCP[ex.getStates().length + i] = new TrackerStepState(components[i]);
+            }
+            ex.setStates(newCP);
+            return ex;
         }
         synchronized (questSortedEntityPointers) {
             TRenderCursor[] components = new TRenderCursor[results.length + 1];
