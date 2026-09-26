@@ -22,7 +22,7 @@ public class TConfig {
     public static boolean isModLoaded(String modid) {
         return LoadingModList.get().getModFileById(modid) != null;
     }
-    public static final boolean TE_LOADED = isModLoaded("terra_entity");
+    public static final boolean CF_LOADED = isModLoaded("confluence");
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
     /* Basic settings. */
@@ -76,19 +76,19 @@ public class TConfig {
         .translation("the_trackers.configuration.center_relative_tracking")
         .defineList(
             "CenterRelativeTracking",
-            TE_LOADED ?
+            CF_LOADED ?
             List.of(
                 "minecraft:ender_dragon|normal|ender_dragon_head",
                 "minecraft:wither|normal_white|wither_head",
-                "terra_entity:king_slime|normal|king_slime",
-                "terra_entity:eye_of_cthulhu|normal|eye_of_cthulhu",
-                "terra_entity:brain_of_cthulhu|normal|brain_of_cthulhu",
-                "terra_entity:eater_of_worlds|normal|eater_of_worlds",
-                "terra_entity:queen_bee|normal|queen_bee",
-                "terra_entity:deerclops|normal|deerclops",
-                "terra_entity:skeletron|normal|skeletron",
-                "terra_entity:hill_of_flesh|normal|wall_of_flesh",
-                "terra_entity:wall_of_flesh|normal|wall_of_flesh"
+                "confluence:king_slime|normal|king_slime",
+                "confluence:eye_of_cthulhu|normal|eye_of_cthulhu",
+                "confluence:brain_of_cthulhu|normal|brain_of_cthulhu",
+                "confluence:eater_of_worlds|normal|eater_of_worlds",
+                "confluence:queen_bee|normal|queen_bee",
+                "confluence:deerclops|normal|deerclops",
+                "confluence:skeletron|normal|skeletron",
+                "confluence:hill_of_flesh|normal|wall_of_flesh",
+                "confluence:wall_of_flesh|normal|wall_of_flesh"
             ) : List.of(
                     "minecraft:ender_dragon|normal|ender_dragon_head",
                     "minecraft:wither|normal_white|wither_head"
@@ -101,36 +101,36 @@ public class TConfig {
         .translation("the_trackers.configuration.center_relative_tracking_secondary")
         .defineList(
             "CenterRelativeTrackingSecondary",
-            TE_LOADED ? List.of(
-                "terra_entity:demon_eye|normal|none",
-                "terra_entity:flying_fish|normal|none",
-                "terra_entity:crimera|normal|none",
-                "terra_entity:eater_of_souls|normal|none",
-                "terra_entity:giant_worm|normal|none",
-                "terra_entity:tomb_crawler|normal|none",
-                "terra_entity:devourer|normal|none",
-                "terra_entity:cave_bat|normal|none",
-                "terra_entity:jungle_bat|normal|none",
-                "terra_entity:snatcher|normal|none",
-                "terra_entity:man_eater|normal|none",
-                "terra_entity:hornet|normal|none",
-                "terra_entity:hell_bat|normal|none",
-                "terra_entity:ice_bat|normal|none",
-                "terra_entity:spore_bat|normal|none",
-                "terra_entity:harpy|normal|none",
-                "terra_entity:cursed_skull|normal|none",
-                "terra_entity:dark_caster|normal|none",
-                "terra_entity:antlion_swarmer|normal|none",
-                "terra_entity:giant_antlion_swarmer|normal|none",
-                "terra_entity:wyvern|normal|none",
-                "terra_entity:granite_elemental|normal|none",
-                "terra_entity:ghost|normal|none",
-                "terra_entity:fire_imp|normal|none",
-                "terra_entity:demon|normal|none",
-                "terra_entity:voodoo_demon|normal|none",
-                "terra_entity:bone_serpent|normal|none",
-                "terra_entity:wither_bone_serpent|normal|none",
-                "terra_entity:meteor_head|normal|none"
+            CF_LOADED ? List.of(
+                "confluence:demon_eye|normal|none",
+                "confluence:flying_fish|normal|none",
+                "confluence:crimera|normal|none",
+                "confluence:eater_of_souls|normal|none",
+                "confluence:giant_worm|normal|none",
+                "confluence:tomb_crawler|normal|none",
+                "confluence:devourer|normal|none",
+                "confluence:cave_bat|normal|none",
+                "confluence:jungle_bat|normal|none",
+                "confluence:snatcher|normal|none",
+                "confluence:man_eater|normal|none",
+                "confluence:hornet|normal|none",
+                "confluence:hell_bat|normal|none",
+                "confluence:ice_bat|normal|none",
+                "confluence:spore_bat|normal|none",
+                "confluence:harpy|normal|none",
+                "confluence:cursed_skull|normal|none",
+                "confluence:dark_caster|normal|none",
+                "confluence:antlion_swarmer|normal|none",
+                "confluence:giant_antlion_swarmer|normal|none",
+                "confluence:wyvern|normal|none",
+                "confluence:granite_elemental|normal|none",
+                "confluence:ghost|normal|none",
+                "confluence:fire_imp|normal|none",
+                "confluence:demon|normal|none",
+                "confluence:voodoo_demon|normal|none",
+                "confluence:bone_serpent|normal|none",
+                "confluence:wither_bone_serpent|normal|none",
+                "confluence:meteor_head|normal|none"
             ) : List.of(),
             ConfigProcessor::isValidEntityBindCRCursor
         );
