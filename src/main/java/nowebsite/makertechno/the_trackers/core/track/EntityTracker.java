@@ -68,7 +68,7 @@ public class EntityTracker {
                 .filter(entity -> !processExisting(entity)) // 刷新已缓存部分
                 .forEach(EntityTracker::tryCreateNew); // 创建指针
 
-        return allScanned.stream().collect(Collectors.toMap(Entity::getUUID, entity -> entity));
+        return allScanned.stream().collect(Collectors.toMap(Entity::getUUID, entity -> entity, (existing, repl) -> existing));
     }
 
     /**
