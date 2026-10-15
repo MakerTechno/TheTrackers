@@ -12,6 +12,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import nowebsite.makertechno.the_trackers.TheTrackers;
 import nowebsite.makertechno.the_trackers.client.gui.components.Icon;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,7 +21,8 @@ import java.util.Optional;
 
 public final class TextureBuildTool {
     private static final ResourceManager RESOURCE_MANAGER = Minecraft.getInstance().getResourceManager();
-    public static Optional<Icon> initIcon(String name, ResourceLocation location, @NotNull Function4<String, ResourceLocation, Integer, Integer, Icon> element) {
+    public static Optional<Icon> initIcon(String name, @Nullable ResourceLocation location, @NotNull Function4<String, ResourceLocation, Integer, Integer, Icon> element) {
+        if (location == null) return Optional.empty();
         try {
             Resource resource = RESOURCE_MANAGER.getResource(location).orElseThrow();
             try (InputStream inputstream = resource.open()) {

@@ -1,5 +1,6 @@
 package nowebsite.makertechno.the_trackers.client.gui.provider;
 
+import net.minecraft.ResourceLocationException;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -37,7 +38,12 @@ public class TextureCache {
 
     public static Icon getIcon(String regName) {
         return ICON_CACHE.computeIfAbsent(regName, key -> {
-            ResourceLocation location = getResourceFromModLocale(key);
+            ResourceLocation location;
+            try {
+                location = getResourceFromModLocale(key);
+            } catch (ResourceLocationException ignore) {
+                location = null;
+            }
             return TextureBuildTool.initIcon(key, location, Icon::new).orElse(Icon.NONE);
         });
     }

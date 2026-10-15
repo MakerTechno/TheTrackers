@@ -83,7 +83,7 @@ public class TConfig {
                 "confluence:king_slime|normal|king_slime",
                 "confluence:eye_of_cthulhu|normal|eye_of_cthulhu",
                 "confluence:brain_of_cthulhu|normal|brain_of_cthulhu",
-                "confluence:brain_of_cthulhu|normal|brain_fake",
+                "confluence:brain_fake|normal|brain_of_cthulhu",
                 "confluence:eater_of_worlds|normal|eater_of_worlds",
                 "confluence:queen_bee|normal|queen_bee",
                 "confluence:deerclops|normal|deerclops",
