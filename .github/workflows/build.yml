@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - neoforge-dev/1.21.1
     tags-ignore:
       - '*'  # ignore tag push
   pull_request:
